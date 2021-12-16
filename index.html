@@ -1,0 +1,116 @@
+<html>
+    <head>
+        <title>Vega-Lite Bar Chart</title>
+        <meta charset="utf-8" />
+  
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" 
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/vega@5.19.1"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.0.0"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.15.1"></script>
+  
+        <style media="screen">
+          /* Add space between Vega-Embed links  */
+          .vega-actions a {
+            margin-right: 5px;
+          }
+          body {
+            font-family: Arial, Helvetica, sans-serif;
+          }
+
+          h1, #coin-info {
+            padding: 15px;
+          }
+
+          #coin-info {
+            color:darkslateblue;
+            font-size: 15pt;
+            font-weight: lighter;
+          }
+        </style>
+    </head>
+
+    <body>
+      <div class="row">
+        <h1 class="col-10">Crypto Dashboard</h1>
+        <p id="coin-info" class = "col-2">Coin: {{ coin }} <br /> Time Range: {{ time }} year(s)</p>
+      </div>
+      <!-- Container for the visualization -->
+      <form class="row" action="request_coin" method=post>
+        <div class="col">
+          <p>Select Coin:</p>
+          <select class="form-control" name="coin">
+            <option>BTC</option>
+            <option>ETH</option>
+            <option>BNB</option>
+            <option>USDT</option>
+            <option>SOL</option>
+            <option>AVAX</option>
+            <option>USDC</option>
+          </select>
+        </div>
+
+        <div class="col">
+          <p>Select Date Range:</p>
+          <select class="form-control" name="time"> 
+            <!-- 'YTD',0.5,1,2,3,4,5, -->
+            <option>0.5</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+          </select>
+
+          <input type="submit">
+        </div>
+      </form>
+      <div class="row">
+        <div class="col" id="candle-vis"></div>
+      </div>
+
+      <div class="row">
+        <div class="col" id="volatility-vis">
+        </div>
+        <div class="col" id="percent-change-vis">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col" id="rolling-avg1">
+        </div>
+        <div class="col" id="rolling-avg2">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col" id="reddit">
+        </div>
+        <div class="col final-info">
+          <p>
+            By: Mickey Piekarski, Varun Dashora, Noor Gill, Marcus Manos
+          </p>
+          <p>
+            <b>Goal:</b> Our goal is to help users understand cryptocurrency trends relating to price and media/Reddit sentiment through visualizations in order to assist in decision-making for investment portfolios.
+          </p>
+          <p>
+            <b>Intended Audience:</b> The intended audience is both professional and amateur cryptocurrency investors who wish to use these metrics and data to refine their portfolios. A secondary audience would be financial or economic researchers who wish to use this information to assist their analysis of the market.
+          </p>
+          <p><b>Data sources:</b> Cryptoreview.ai and Nomics.api</p>
+
+          <img src="cryptoreview_logo.jpg" width="100px" height="100px">
+        </div>
+      </div>
+
+      <script>
+        // Assign the specification to a local variable vlSpec.
+        const opts = {'width': "100%"};
+        vegaEmbed('#volatility-vis', {{ vol|safe }});
+        vegaEmbed('#percent-change-vis', {{ per|safe }});
+        vegaEmbed('#candle-vis', {{ cdl|safe }});
+        vegaEmbed('#rolling-avg1', {{ra1|safe}});
+        vegaEmbed('#rolling-avg2', {{ra2|safe}});
+        vegaEmbed('#reddit', {{red|safe}});
+      </script>
+    </body>
+</html>
